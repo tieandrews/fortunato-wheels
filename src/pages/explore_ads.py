@@ -19,8 +19,8 @@ cur_dir = os.getcwd()
 try:
     SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
 except ValueError:
-    # to be used on render with non-project named directory, it's named src
-    SRC_PATH = "/opt/render/project/src/"
+    # del with render not working with relative imports
+    pass
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
 
