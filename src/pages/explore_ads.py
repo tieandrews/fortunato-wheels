@@ -20,6 +20,7 @@ try:
     SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
 except ValueError:
     # del with render not working with relative imports
+    SRC_PATH = ""
     pass
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
