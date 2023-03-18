@@ -21,7 +21,7 @@ try:
 except ValueError:
     # to be used on render with non-project named directory, it's named src
     SRC_PATH = cur_dir[
-        : cur_dir.index(os.path.join("src", "src")) + len(os.path.join("src", "src"))
+        : cur_dir.index(os.path.join("src", "src")) + len(os.path.join("src"))
     ]
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
