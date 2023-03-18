@@ -16,7 +16,11 @@ import plotly.express as px
 import numpy as np
 
 cur_dir = os.getcwd()
-SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
+try:
+    SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
+except ValueError:
+    # to be used on render with non-project named directory, it's named src
+    SRC_PATH = cur_dir[: cur_dir.index("src/src") + len("src")]
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
 
