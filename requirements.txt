@@ -7,4 +7,3 @@ gunicorn~=20.1
 numpy~=1.24
 pandas~=1.5
 plotly~=5.13
-python~=3.10
