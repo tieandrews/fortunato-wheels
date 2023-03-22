@@ -3,7 +3,7 @@
 Contributions are welcome, and they are greatly appreciated! Every little bit
 helps, and credit will always be given.
 
-If you notice a bug or have a feature request, please [here](https://github.com/UBC-MDS/suicide_indicator_r/issues). All contributors must abide by our [code of conduct](https://github.com/UBC-MDS/suicide_indicator_r/blob/main/CODE_OF_CONDUCT.md).
+If you notice a bug or have a feature request, please [here](https://github.com/tieandrews/fortunato-wheels/issues). All contributors must abide by our [code of conduct](https://github.com/tieandrews/fortunato-wheels/blob/main/CODE_OF_CONDUCT.md).
 
 ## Types of Contributions
 
@@ -42,7 +42,7 @@ If you are proposing a feature:
 
 ## Get Started!
 
-Ready to contribute? Please open up an issue [here](https://github.com/UBC-MDS/suicide_indicator_r/issues).
+Ready to contribute? Please open up an issue [here](https://github.com/tieandrews/fortunato-wheels/issues).
 
 ## Pull Request Guidelines
 
