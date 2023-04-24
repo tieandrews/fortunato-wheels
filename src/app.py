@@ -7,6 +7,7 @@ from dash import Dash, dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
+import dash_loading_spinners
 
 external_stylesheets = [
     dbc.themes.BOOTSTRAP,
@@ -99,7 +100,7 @@ navbar = dbc.Navbar(
                     align="center",
                     className="g-0",
                 ),
-                href="https://plotly.com",
+                href="https://www.fortunatowheels.com",
                 style={"textDecoration": "none"},
             ),
             dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
@@ -118,10 +119,28 @@ navbar = dbc.Navbar(
 # put navbar in standard html.Div to till width of page
 app.layout = html.Div(
     children=[
-        navbar,
-        dbc.Container(
-            children=[dash.page_container],
-            fluid=True,
+        html.Div(
+            id="div-loading",
+            children=[
+                dash_loading_spinners.RingChase(
+                    fullscreen=True,
+                    id="loading-whole-app",
+                    width=125,
+                    thickness=12,
+                    color="#0066ff",
+                )
+            ],
+        ),
+        html.Div(
+            className="div-app",
+            id="div-app",
+            children=[
+                navbar,
+                dbc.Container(
+                    children=[dash.page_container],
+                    fluid=True,
+                ),
+            ],
         ),
     ],
 )
@@ -138,5 +157,18 @@ def toggle_navbar_collapse(n, is_open):
     return is_open
 
 
+@app.callback(
+    Output("div-loading", "children"),
+    [Input("div-app", "loading_state")],
+    [
+        State("div-loading", "children"),
+    ],
+)
+def hide_loading_after_startup(loading_state, children):
+    if children:
+        return None
+    raise PreventUpdate
+
+
 if __name__ == "__main__":
-    app.run_server(debug=False, port=8050, host="0.0.0.0")
+    app.run_server(debug=True, port=8050, host="0.0.0.0")
