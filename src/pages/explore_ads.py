@@ -6,7 +6,11 @@ import sys
 
 import dash
 
-dash.register_page(__name__)
+dash.register_page(
+    __name__,
+    title="Fortunato Wheels | Explore",
+    name="Fortunato Wheels | Explore",
+)
 
 from dash import Dash, dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
