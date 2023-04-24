@@ -9,3 +9,4 @@ pandas~=1.5
 plotly~=5.13
 dash-iconify~=0.1
 statsmodels~=0.13
+dash-loadings-spinners~=1.0
