@@ -120,18 +120,6 @@ navbar = dbc.Navbar(
 app.layout = html.Div(
     children=[
         html.Div(
-            id="div-loading",
-            children=[
-                dash_loading_spinners.RingChase(
-                    fullscreen=True,
-                    id="loading-whole-app",
-                    width=125,
-                    thickness=12,
-                    color="#0066ff",
-                )
-            ],
-        ),
-        html.Div(
             className="div-app",
             id="div-app",
             children=[
@@ -155,19 +143,6 @@ def toggle_navbar_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
-
-
-@app.callback(
-    Output("div-loading", "children"),
-    [Input("div-app", "loading_state")],
-    [
-        State("div-loading", "children"),
-    ],
-)
-def hide_loading_after_startup(loading_state, children):
-    if children:
-        return None
-    raise PreventUpdate
 
 
 if __name__ == "__main__":
