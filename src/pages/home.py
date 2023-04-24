@@ -1,6 +1,11 @@
 import dash
 
-dash.register_page(__name__, path="/")
+dash.register_page(
+    __name__,
+    path="/",
+    title="Fortunato Wheels",
+    name="Fortunato Wheels",
+)
 
 from dash import Dash, dcc, html, Input, Output, callback
 import dash_bootstrap_components as dbc
@@ -157,18 +162,18 @@ layout = dbc.Container(  # html.Div(
                             dbc.Col(
                                 explore_ads_card,
                                 width={"size": 12, "order": "last", "offset": 0},
-                                md={"size": 6, "order": "last", "offset": 0},
+                                xl={"size": 6, "order": "last", "offset": 0},
                             ),
                             dbc.Col(
                                 analyze_ad_card,
                                 width={"size": 12, "order": "last", "offset": 0},
-                                md={"size": 6, "order": "last", "offset": 0},
+                                xl={"size": 6, "order": "last", "offset": 0},
                             ),
                         ]
                     ),
                 ],
                 width={"size": 12, "order": "last", "offset": 0},
-                md={"size": 6, "order": "last", "offset": 3},
+                lg={"size": 6, "order": "last", "offset": 3},
             )
         ),
     ],
