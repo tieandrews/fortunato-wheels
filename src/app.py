@@ -171,4 +171,4 @@ def hide_loading_after_startup(loading_state, children):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, port=8050, host="0.0.0.0")
+    app.run_server(debug=False, port=8050, host="0.0.0.0")
