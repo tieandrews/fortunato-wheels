@@ -21,6 +21,7 @@ app = dash.Dash(
     title="fortunato-wheels",
 )
 
+
 server = app.server
 
 nav_buttons = dbc.Row(
@@ -132,6 +133,37 @@ app.layout = html.Div(
         ),
     ],
 )
+
+# Setup google analytics connection: https://aticoengineering.com/shootin-trouble-in-data-science/google-analytics-in-dash-web-apps/
+app.index_string = """<!DOCTYPE html>
+<html>
+<head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CKDC8LRCRB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CKDC8LRCRB');
+</script>
+
+{%metas%}
+<title>{%title%}</title>
+{%favicon%}
+{%css%}
+</head>
+<body>
+{%app_entry%}
+<footer>
+{%config%}
+{%scripts%}
+{%renderer%}
+</footer>
+</body>
+</html>
+"""
 
 # add callback for toggling the collapse on small screens
 @app.callback(
