@@ -5,9 +5,16 @@
 import dash
 from dash import Dash, dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
+from dash import dcc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
-import dash_loading_spinners
+import time
+
+from logs import get_logger
+from data.azure_blob_storage import AzureBlob
+
+# Create a custom logger
+logger = get_logger(__name__)
 
 external_stylesheets = [
     dbc.themes.BOOTSTRAP,
