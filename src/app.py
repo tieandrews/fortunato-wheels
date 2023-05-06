@@ -5,9 +5,16 @@
 import dash
 from dash import Dash, dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
+from dash import dcc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
-import dash_loading_spinners
+import time
+
+from logs import get_logger
+from data.azure_blob_storage import AzureBlob
+
+# Create a custom logger
+logger = get_logger(__name__)
 
 external_stylesheets = [
     dbc.themes.BOOTSTRAP,
@@ -120,6 +127,10 @@ navbar = dbc.Navbar(
 # put navbar in standard html.Div to till width of page
 app.layout = html.Div(
     children=[
+        html.Div(id="first-load", children=True, style={"display": "none"}),
+        dcc.Store(id="price-summary-store", storage_type="session"),
+        dcc.Store(id="num-ads-summary-store", storage_type="session"),
+        dcc.Store(id="mileage-summary-store", storage_type="session"),
         html.Div(
             className="div-app",
             id="div-app",
@@ -175,6 +186,43 @@ def toggle_navbar_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
+
+
+# callback to load data on first load in the background
+@callback(
+    Output("price-summary-store", "data"),
+    Output("num-ads-summary-store", "data"),
+    Output("mileage-summary-store", "data"),
+    Input("first-load", "children"),
+    [
+        State("price-summary-store", "data"),
+        State("num-ads-summary-store", "data"),
+        State("mileage-summary-store", "data"),
+    ],
+)
+def load_data(first_load, price_summary, num_ads_summary, mileage_summary):
+
+    # if any summary is None, then we need to load data
+    if not price_summary or not num_ads_summary or not mileage_summary:
+
+        start_time = time.time()
+        azure_blob = AzureBlob()
+        ad_price_summary = azure_blob.load_parquet(
+            "processed/avg_price_summary.parquet"
+        ).to_dict()
+        mileage_summary = azure_blob.load_parquet(
+            "processed/mileage_distribution_summary.parquet"
+        ).to_dict()
+        num_ads_summary = azure_blob.load_parquet(
+            "processed/num_ads_summary.parquet"
+        ).to_dict()
+        logger.info(
+            f"Loaded data from Azure Blob Storage in {time.time() - start_time} seconds"
+        )
+        return ad_price_summary, num_ads_summary, mileage_summary
+    else:
+        logger.debug("Data already loaded, skipping")
+        raise dash.exceptions.PreventUpdate
 
 
 if __name__ == "__main__":

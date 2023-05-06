@@ -7,13 +7,23 @@ dash.register_page(
     name="Fortunato Wheels",
 )
 
-from dash import Dash, dcc, html, Input, Output, callback
+import sys, os
+from dash import Dash, dcc, html, Input, Output, callback, State
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 import plotly.express as px
+import time
 
-df = px.data.medals_wide(indexed=True)
+cur_dir = os.getcwd()
+SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
+if SRC_PATH not in sys.path:
+    sys.path.append(SRC_PATH)
+
+from src.logs import get_logger
+
+# Create a custom logger
+logger = get_logger(__name__)
 
 explore_ads_card = dbc.Card(
     [

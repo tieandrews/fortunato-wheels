@@ -10,3 +10,6 @@ plotly~=5.13
 dash-iconify~=0.1
 statsmodels~=0.13
 dash-loading-spinners~=1.0
+azure-storage-blob~=12.16
+azure-identity~=1.12
+python-dotenv~=1.0

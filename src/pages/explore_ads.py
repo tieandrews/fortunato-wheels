@@ -18,6 +18,7 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 import plotly.express as px
 import numpy as np
+import time
 
 cur_dir = os.getcwd()
 try:
@@ -38,7 +39,6 @@ from src.visualizations.explore_ads_plots import (
 from src.pages.dash_styles import SIDEBAR_STYLE, CONTENT_STYLE
 
 vehicles_df = load_craigslist_data()
-
 
 filtering_accordion = html.Div(
     dbc.Accordion(
@@ -266,7 +266,7 @@ layout = html.Div(
             },  # "overflow": "hidden"
         ),
     ]
-)  # dcc.Location(id="url"),
+)
 
 
 @callback(
