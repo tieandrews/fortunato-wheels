@@ -44,7 +44,7 @@ explore_ads_card = dbc.Card(
                 dmc.Divider(variant="solid"),
                 dmc.Anchor(
                     dmc.Button(
-                        "Explore Past Ads",
+                        "Explore 3+ Million Ads",
                         variant="gradient",
                         gradient={"from": "indigo", "to": "cyan"},
                         leftIcon=[
