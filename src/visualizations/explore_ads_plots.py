@@ -29,39 +29,46 @@ def hex_to_rgba(hex: str, opacity: float = 1.0):
         + str(int(hex[2 * hlen // 3 :], 16))
         + f",{opacity:.2f})"
     )
+
+
+def plot_vehicle_prices_summary(price_summary_df):
+    """Plots the price of selected vehicles by their age at posting.
+
+    Parameters
+    ----------
+    price_summary_df : pd.DataFrame
+        DataFrame with columns `age` and remaining columns as vehicle model names.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Plotly figure object.
+    """
     fig = px.scatter(
-        vehicles_df,
-        x="year",
+        price_summary_df,
+        x="age",
         y="price",
-        color="manufacturer",
-        opacity=0.5,
+        color="model",
         trendline="lowess",
-        # title="Price of used vehicles over time",
         labels={
-            "year": "Year",
-            "price": "Price",
-            "manufacturer": "Manufacturer",
+            "age": "Age of Vehicle (years)",
+            "price": "Avg. Price ($CAD)",
+            "model": "Vehicle Model",
         },
-        hover_name="model",
-        hover_data=["odometer_km", "condition", "cylinders", "fuel", "transmission"],
-        template="plotly_white",
-        # width=800,
         height=300,
+    ).update_xaxes(
+        range=[price_summary_df["age"].min() - 0.1, price_summary_df["age"].max() + 0.1]
     )
 
     fig.update_layout(
         xaxis=dict(
             tickmode="linear",
-            tick0=1990,
-            dtick=5,
-        ),
-        yaxis=dict(
-            tickmode="linear",
             tick0=0,
-            dtick=10000,
+            dtick=1,
         ),
         margin=dict(l=5, r=5, t=5, b=5),
-        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01),
+        legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99),
+        hovermode="x unified",
     )
 
     return fig
