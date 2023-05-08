@@ -3,6 +3,7 @@
 
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 def hex_to_rgba(hex: str, opacity: float = 1.0):
