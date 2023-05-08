@@ -44,38 +44,37 @@ filtering_accordion = html.Div(
     dbc.Accordion(
         [
             dbc.AccordionItem(
-                dmc.MultiSelect(
-                    label="Select Manufacturers",
-                    placeholder="All Manufacturers",
-                    id="explore-manufacturer-select",
-                    searchable=True,
-                    clearable=True,
-                    nothingFound="No matching manufacturers found",
-                    value=["Toyota", "Honda"],
-                    data=vehicles_df.manufacturer.unique(),
-                ),
-                title="Manufacturer",
-            ),
-            dbc.AccordionItem(
-                dmc.MultiSelect(
-                    label="Select Models",
-                    placeholder="All Models",
-                    id="explore-model-select",
-                    searchable=True,
-                    clearable=True,
-                    nothingFound="No matching models found",
-                    value=[],
-                    data=vehicles_df.model.unique(),
-                ),
-                title="Model",
+                children=[
+                    dmc.MultiSelect(
+                        label="Select Vehicle Makes",
+                        placeholder="All Makes",
+                        id="explore-make-select",
+                        searchable=True,
+                        clearable=True,
+                        nothingFound="No matching makes found",
+                        value=[],
+                    ),
+                    dmc.MultiSelect(
+                        label="Select Models",
+                        placeholder="No models selected",
+                        id="explore-model-select",
+                        searchable=True,
+                        clearable=True,
+                        nothingFound="No matching models found",
+                        value=["civic", "tundra", "cr-v"],
+                        maxSelectedValues=6,
+                        required=True,
+                    ),
+                ],
+                title="Make & Model",
             ),
             dbc.AccordionItem(
                 dcc.RangeSlider(
-                    min=vehicles_df.price.min(),
-                    max=vehicles_df.price.max(),
-                    step=1,
+                    min=0,
+                    max=100_000,
+                    step=100,
                     id="explore-price-slider",
-                    value=[0, vehicles_df.price.max()],
+                    value=[0, 100_000],
                     tooltip={"placement": "bottom", "always_visible": True},
                     marks=None,
                 ),
@@ -83,19 +82,18 @@ filtering_accordion = html.Div(
             ),
             dbc.AccordionItem(
                 dcc.RangeSlider(
-                    min=vehicles_df.year.min(),
-                    max=vehicles_df.year.max(),
+                    min=0,
+                    max=15,
                     step=1,
-                    id="explore-year-slider",
-                    value=[vehicles_df.year.min(), vehicles_df.year.max()],
+                    id="explore-age-slider",
+                    value=[0, 15],
                     tooltip={"placement": "bottom", "always_visible": True},
                     marks=None,
                 ),
-                title="Year",
+                title="Vehicle Age",
             ),
         ],
         flush=True,
-        start_collapsed=True,
         always_open=True,
     ),
 )
@@ -141,13 +139,13 @@ sidebar = html.Div(
 vehicle_condition_card = (
     dbc.Card(
         [
-            dbc.CardHeader("Vehicle Condition"),
+            dbc.CardHeader("Number of Ads Analyzed"),
             dbc.CardBody(
                 [
                     dbc.Spinner(
                         dcc.Graph(
-                            id="vehicle-condition-plot",
-                            figure=None,
+                            id="num-ads-summary-plot",
+                            figure=blank_placeholder_plot(height=300),
                         ),
                         type="grow",
                         color="primary",
@@ -165,15 +163,14 @@ content = dbc.Container(
             dbc.Col(
                 dbc.Card(
                     [
-                        dbc.CardHeader("Car Prices Over Time"),
+                        dbc.CardHeader("Car Prices by Age"),
                         dbc.CardBody(
                             [
                                 dbc.Spinner(
                                     dcc.Graph(
-                                        id="price-over-time-plot",
-                                        figure=plot_vehicle_price_over_time(
-                                            vehicles_df
-                                        ),
+                                        id="price-age-summary-plot",
+                                        figure=blank_placeholder_plot(height=300),
+                                        config={"displayModeBar": False},
                                     ),
                                     type="grow",
                                     color="primary",
@@ -204,13 +201,13 @@ content = dbc.Container(
                 dbc.Col(
                     dbc.Card(
                         [
-                            dbc.CardHeader("Vehicle Condition"),
+                            dbc.CardHeader("Number of Ads Analyzed"),
                             dbc.CardBody(
                                 [
                                     dbc.Spinner(
                                         dcc.Graph(
-                                            id="vehicle-condition-plot",
-                                            figure=plot_vehicle_condition(vehicles_df),
+                                            id="num-ads-summary-plot",
+                                            figure=blank_placeholder_plot(height=300),
                                         ),
                                         type="grow",
                                         color="primary",
@@ -226,13 +223,13 @@ content = dbc.Container(
                 dbc.Col(
                     dbc.Card(
                         [
-                            dbc.CardHeader("Vehicle Mileage"),
+                            dbc.CardHeader("Average Yearly Mileage"),
                             dbc.CardBody(
                                 [
                                     dbc.Spinner(
                                         dcc.Graph(
-                                            id="vehicle-odometer-plot",
-                                            figure=plot_odometer_histogram(vehicles_df),
+                                            id="vehicle-mileage-plot",
+                                            figure=blank_placeholder_plot(height=300),
                                         ),
                                         type="grow",
                                         color="primary",
@@ -255,6 +252,7 @@ content = dbc.Container(
 
 layout = html.Div(
     [
+        html.Div(id="explore-first-load", children=True, style={"display": "none"}),
         dbc.Row(
             [
                 dbc.Col(sidebar, width=12, lg=3, className="g-0"),
