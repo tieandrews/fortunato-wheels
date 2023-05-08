@@ -165,26 +165,40 @@ def plot_mileage_distribution_summary(mileage_summary_df):
     return fig
 
 
-def plot_odometer_histogram(vehicles):
-    fig = px.histogram(
-        vehicles,
-        x="odometer_km",
-        color="manufacturer",
+# plot a horizontal bar chart with model on the left and number of ads on x-axis
+def plot_num_ads_summary(num_ads_summary_df):
+    """Plots the number of ads for selected vehicles.
+
+    Parameters
+    ----------
+    num_ads_summary_df : pd.DataFrame
+        DataFrame with columns `model` and `num_ads`.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Plotly figure object.
+    """
+    fig = px.bar(
+        num_ads_summary_df,
+        x="num_ads",
+        y="model",
+        color="model",
+        orientation="h",
         labels={
-            "odometer_km": "Odometer (km)",
-            "manufacturer": "Manufacturer",
+            "num_ads": "Number of Ads",
+            "model": "Vehicle Model",
         },
-        hover_name="model",
-        hover_data=["year", "condition", "cylinders", "fuel", "transmission"],
-        template="plotly_white",
+        # have text_auto show 1000"s of ads with one decmila  place
+        text_auto=".2%s",
         height=300,
     )
 
     fig.update_layout(
-        xaxis_range=[0, min(vehicles.odometer_km.max(), 600000)],
-        legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99),
-        yaxis_title="No. of Vehicles",
         margin=dict(l=5, r=5, t=5, b=5),
+        legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99),
+        showlegend=False,
+        yaxis={"categoryorder": "total ascending"},
     )
 
     return fig
