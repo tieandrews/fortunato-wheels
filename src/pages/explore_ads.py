@@ -429,38 +429,62 @@ def update_filter_options(
 @callback(
     Output("num-matching-entries", "children"),
     [
-        Input("explore-year-slider", "value"),
+        Input("explore-age-slider", "value"),
         Input("explore-price-slider", "value"),
         Input("explore-model-select", "value"),
-        Input("explore-manufacturer-select", "value"),
+        Input("explore-make-select", "value"),
     ],
+    State("num-ads-summary-store", "data"),
+    State("makes-models-store", "data"),
 )
-def update_ad_filter_count(year_range, price_range, models, manufacturers):
+def update_ad_filter_count(
+    age_range, price_range, models, makes, num_ads_summary_dict, makes_models_dict
+):
+    num_ads_summary_df = pd.DataFrame.from_dict(num_ads_summary_dict, orient="columns")
+    makes_models_df = pd.DataFrame.from_dict(makes_models_dict, orient="columns")
 
     if price_range is None:
-        price_range = [vehicles_df.price.min(), vehicles_df.price.max()]
+        price_range = [0, vehicles_df.price.max()]
 
-    if len(models) == 0:
-        models = vehicles_df.model.unique()
+    if (len(models) == 0) & (len(makes) == 0):
+        # remove some models that are not really models
+        models = (
+            makes_models_df.query("model not in @INVALID_MODELS")
+            .model.unique()
+            .tolist()
+        )
+    elif len(models) == 0:
+        models = (
+            makes_models_df.query("make in @makes & model not in @INVALID_MODELS")
+            .model.unique()
+            .tolist()
+        )
 
-    if len(manufacturers) == 0:
-        manufacturers = vehicles_df.manufacturer.unique()
+    if len(makes) == 0:
+        makes = makes_models_df.make.unique()
 
-    if year_range is None:
-        year_range = [vehicles_df.year.min(), vehicles_df.year.max()]
+    if age_range is None:
+        age_range = [vehicles_df.year.min(), vehicles_df.year.max()]
 
-    subset_df = vehicles_df.query(
-        "manufacturer in @manufacturers & "
-        "model in @models & "
-        "price > @price_range[0] & "
-        "price < @price_range[1] & "
-        "year >= @year_range[0] & "
-        "year <= @year_range[1]"
+    matching_ads = (
+        num_ads_summary_df.query("age >= @age_range[0] & age <= @age_range[1]")[models]
+        .sum()
+        .sum()
     )
 
-    num_matching_entries = html.H4(
-        str(len(subset_df)) + " matching ads",
-        style={"font-family": "'Poppins'", "textAlign": "center"},
+    total_ads = num_ads_summary_df.drop(columns=["age"]).sum().sum()
+
+    num_matching_entries = html.Div(
+        [
+            html.H4(
+                str(matching_ads) + " matching ads",
+                style={"font-family": "'Poppins'", "textAlign": "center"},
+            ),
+            html.H6(
+                f"of {total_ads/1_000_000:.1f}" + "+ million ads analyzed",
+                style={"font-family": "'Poppins'", "textAlign": "center"},
+            ),
+        ]
     )
 
     return num_matching_entries
