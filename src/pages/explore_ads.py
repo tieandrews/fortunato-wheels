@@ -601,27 +601,52 @@ def update_mileage_summary_plot(
     return mileage_summary_plot
 
 
-    if year_range is None:
-        year_range = [vehicles_df.year.min(), vehicles_df.year.max()]
+@callback(
+    Output("num-ads-summary-plot", "figure"),
+    [Input("apply-filters-button", "n_clicks")],
+    [
+        State("explore-age-slider", "value"),
+        State("explore-price-slider", "value"),
+        State("explore-model-select", "value"),
+        State("explore-make-select", "value"),
+        State("num-ads-summary-store", "data"),
+        State("makes-models-store", "data"),
+    ],
+)
+def update_num_ads_summary_plot(
+    n_clicks, age_range, price_range, models, makes, num_ads_summary, makes_models
+):
+    # convert models to lower case and replace spaces with dashes
+    models = [model.lower().replace(" ", "-") for model in models]
+    num_ads_summary_df = pd.DataFrame.from_dict(num_ads_summary, orient="columns")
+    makes_models_df = pd.DataFrame.from_dict(makes_models, orient="columns")
+    num_ads_summary_df = num_ads_summary_df[models + ["age"]]
 
-    subset_df = vehicles_df.query(
-        "manufacturer in @manufacturers & "
-        "model in @models & "
-        "price > @price_range[0] & "
-        "price < @price_range[1] & "
-        "year >= @year_range[0] & "
-        "year <= @year_range[1]"
+    if age_range is not None:
+        num_ads_summary_df = num_ads_summary_df.query(
+            "age >= @age_range[0] & age <= @age_range[1]"
+        )
+
+    make_options = makes_models_df.make.unique().tolist()
+    make_options.sort()
+
+    num_ads_per_model = num_ads_summary_df[models].sum(axis=0).to_frame(name="num_ads")
+    num_ads_per_model["model"] = models
+    # ad the matching make for each model to the dataframe
+    num_ads_per_model["make"] = num_ads_per_model.model.apply(
+        lambda x: makes_models_df.query("model == @x").make.values[0]
     )
 
-    price_fig = plot_vehicle_price_over_time(subset_df)
+    # filter for a minimum of 200 ads per make
+    num_ads_per_model = num_ads_per_model.query("num_ads > 200")
 
-    condition_fig = plot_vehicle_condition(subset_df)
-
-    odometer_fig = plot_odometer_histogram(subset_df)
-
-    num_matching_entries = html.H4(
-        str(len(subset_df)) + " matching ads",
-        style={"font-family": "'Poppins'", "textAlign": "center"},
+    num_ads_per_model["model"] = (
+        num_ads_per_model["model"].str.title()
+        + "<br>("
+        + num_ads_per_model["make"].str.replace("-", " ").str.title()
+        + ")"
     )
 
-    return price_fig, condition_fig, odometer_fig
+    num_ads_summary_plot = plot_num_ads_summary(num_ads_per_model)
+
+    return num_ads_summary_plot
