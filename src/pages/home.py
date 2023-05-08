@@ -15,11 +15,6 @@ from dash_iconify import DashIconify
 import plotly.express as px
 import time
 
-cur_dir = os.getcwd()
-SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
-if SRC_PATH not in sys.path:
-    sys.path.append(SRC_PATH)
-
 from src.logs import get_logger
 
 # Create a custom logger

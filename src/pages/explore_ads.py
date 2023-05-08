@@ -18,17 +18,6 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 import pandas as pd
 
-cur_dir = os.getcwd()
-try:
-    SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
-except ValueError:
-    # del with render not working with relative imports
-    SRC_PATH = ""
-    pass
-if SRC_PATH not in sys.path:
-    sys.path.append(SRC_PATH)
-
-from src.data.load_preprocess_craigslist import load_craigslist_data
 from src.visualizations.explore_ads_plots import (
     plot_vehicle_prices_summary,
     plot_mileage_distribution_summary,

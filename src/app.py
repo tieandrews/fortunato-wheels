@@ -1,7 +1,7 @@
 """
  # @ Create Time: 2023-03-13 11:07:55.038078
 """
-
+import sys, os
 import dash
 from dash import Dash, dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
@@ -12,6 +12,17 @@ import time
 
 from logs import get_logger
 from data.azure_blob_storage import AzureBlob
+
+# on launch ensure src is in path
+cur_dir = os.getcwd()
+try:
+    SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
+except ValueError:
+    # deal with Azure app service not working with relative imports
+    SRC_PATH = ""
+    pass
+if SRC_PATH not in sys.path:
+    sys.path.append(SRC_PATH)
 
 # Create a custom logger
 logger = get_logger(__name__)
