@@ -128,27 +128,6 @@ sidebar = html.Div(
     style=SIDEBAR_STYLE,
 )
 
-vehicle_condition_card = (
-    dbc.Card(
-        [
-            dbc.CardHeader("Number of Ads Analyzed"),
-            dbc.CardBody(
-                [
-                    dbc.Spinner(
-                        dcc.Graph(
-                            id="num-ads-summary-plot",
-                            figure=blank_placeholder_plot(height=300),
-                        ),
-                        type="grow",
-                        color="primary",
-                    )
-                ]
-            ),
-        ]
-    ),
-)
-
-
 content = dbc.Container(
     [
         dbc.Row(
@@ -200,6 +179,7 @@ content = dbc.Container(
                                         dcc.Graph(
                                             id="num-ads-summary-plot",
                                             figure=blank_placeholder_plot(height=300),
+                                            config={"displayModeBar": False},
                                         ),
                                         type="grow",
                                         color="primary",
@@ -222,6 +202,7 @@ content = dbc.Container(
                                         dcc.Graph(
                                             id="vehicle-mileage-plot",
                                             figure=blank_placeholder_plot(height=300),
+                                            config={"displayModeBar": False},
                                         ),
                                         type="grow",
                                         color="primary",
