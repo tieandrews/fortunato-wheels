@@ -543,24 +543,63 @@ def update_price_summary_plot(
 
     return price_summary_plot
 
+
+@callback(
+    Output("vehicle-mileage-plot", "figure"),
     [Input("apply-filters-button", "n_clicks")],
     [
-        State("explore-year-slider", "value"),
+        State("explore-age-slider", "value"),
         State("explore-price-slider", "value"),
         State("explore-model-select", "value"),
-        State("explore-manufacturer-select", "value"),
+        State("explore-make-select", "value"),
+        State("mileage-summary-store", "data"),
+        State("makes-models-store", "data"),
     ],
 )
-def update_explorer_plots(n_clicks, year_range, price_range, models, manufacturers):
+def update_mileage_summary_plot(
+    n_clicks, year_range, price_range, models, makes, mileage_summary, makes_models
+):
+    # convert models to lower case and replace spaces with dashes
+    models = [model.lower().replace(" ", "-") for model in models]
 
-    if price_range is None:
-        price_range = [vehicles_df.price.min(), vehicles_df.price.max()]
+    mileage_summary_df = pd.DataFrame.from_dict(mileage_summary, orient="columns")
+    makes_models_df = pd.DataFrame.from_dict(makes_models, orient="columns")
 
-    if len(models) == 0:
-        models = vehicles_df.model.unique()
+    if models is None:
+        mileage_summary_df = mileage_summary_df[
+            ["911", "4runner", "tundra", "skyline"] + ["yearly_mileage_range"]
+        ]
+    else:
+        mileage_summary_df = mileage_summary_df[models + ["yearly_mileage_range"]]
 
-    if len(manufacturers) == 0:
-        manufacturers = vehicles_df.manufacturer.unique()
+    # melt dataframe to long format with age, model, and price as columns
+    mileage_summary_df = pd.melt(
+        mileage_summary_df,
+        id_vars=["yearly_mileage_range"],
+        var_name="model",
+        value_name="percent_of_vehicles",
+    )
+
+    # add make to the model field for the legend to be readable
+    mileage_summary_df = mileage_summary_df.merge(
+        makes_models_df, left_on="model", right_on="model", how="left"
+    )
+    mileage_summary_df["model"] = (
+        mileage_summary_df["model"].str.title()
+        + " ("
+        + mileage_summary_df["make"].str.replace("-", " ").str.title()
+        + ")"
+    )
+
+    # cast age to int
+    mileage_summary_df["yearly_mileage_range"] = mileage_summary_df[
+        "yearly_mileage_range"
+    ].astype(int)
+
+    mileage_summary_plot = plot_mileage_distribution_summary(mileage_summary_df)
+
+    return mileage_summary_plot
+
 
     if year_range is None:
         year_range = [vehicles_df.year.min(), vehicles_df.year.max()]
