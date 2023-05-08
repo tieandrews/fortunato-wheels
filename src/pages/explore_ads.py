@@ -28,6 +28,7 @@ from src.pages.dash_styles import SIDEBAR_STYLE, CONTENT_STYLE
 from src.logs import get_logger
 
 INVALID_MODELS = ["other"]
+DEFAULT_MODELS = ["ghost", "model-x", "911", "m3"]
 
 # Create a custom logger
 logger = get_logger(__name__)
@@ -48,12 +49,12 @@ filtering_accordion = html.Div(
                     ),
                     dmc.MultiSelect(
                         label="Select Models",
-                        placeholder="No models selected",
+                        placeholder="No models selected, defaults used.",
                         id="explore-model-select",
                         searchable=True,
                         clearable=True,
                         nothingFound="No matching models found",
-                        value=["civic", "tundra", "cr-v"],
+                        value=DEFAULT_MODELS,
                         maxSelectedValues=6,
                         required=True,
                     ),
@@ -478,6 +479,10 @@ def update_ad_filter_count(
 def update_price_summary_plot(
     n_clicks, age_range, price_range, models, makes, price_summary, makes_models
 ):
+    # if no models selected, display the default models
+    if len(models) == 0:
+        models = DEFAULT_MODELS
+
     # convert models to lower case and replace spaces with dashes
     models = [model.lower().replace(" ", "-") for model in models]
 
@@ -532,6 +537,10 @@ def update_price_summary_plot(
 def update_mileage_summary_plot(
     n_clicks, year_range, price_range, models, makes, mileage_summary, makes_models
 ):
+    # if no models selected, display the default models
+    if len(models) == 0:
+        models = DEFAULT_MODELS
+
     # convert models to lower case and replace spaces with dashes
     models = [model.lower().replace(" ", "-") for model in models]
 
@@ -589,6 +598,10 @@ def update_mileage_summary_plot(
 def update_num_ads_summary_plot(
     n_clicks, age_range, price_range, models, makes, num_ads_summary, makes_models
 ):
+    # if no models selected, display the default models
+    if len(models) == 0:
+        models = DEFAULT_MODELS
+
     # convert models to lower case and replace spaces with dashes
     models = [model.lower().replace(" ", "-") for model in models]
     num_ads_summary_df = pd.DataFrame.from_dict(num_ads_summary, orient="columns")
