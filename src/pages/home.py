@@ -7,13 +7,18 @@ dash.register_page(
     name="Fortunato Wheels",
 )
 
-from dash import Dash, dcc, html, Input, Output, callback
+import sys, os
+from dash import Dash, dcc, html, Input, Output, callback, State
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 import plotly.express as px
+import time
 
-df = px.data.medals_wide(indexed=True)
+from src.logs import get_logger
+
+# Create a custom logger
+logger = get_logger(__name__)
 
 explore_ads_card = dbc.Card(
     [
@@ -34,7 +39,7 @@ explore_ads_card = dbc.Card(
                 dmc.Divider(variant="solid"),
                 dmc.Anchor(
                     dmc.Button(
-                        "Explore Past Ads",
+                        "Explore 3+ Million Ads",
                         variant="gradient",
                         gradient={"from": "indigo", "to": "cyan"},
                         leftIcon=[
