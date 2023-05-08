@@ -491,9 +491,58 @@ def update_ad_filter_count(
 
 
 @callback(
-    Output("price-over-time-plot", "figure"),
-    Output("vehicle-condition-plot", "figure"),
-    Output("vehicle-odometer-plot", "figure"),
+    Output("price-age-summary-plot", "figure"),
+    [Input("apply-filters-button", "n_clicks")],
+    [
+        State("explore-age-slider", "value"),
+        State("explore-price-slider", "value"),
+        State("explore-model-select", "value"),
+        State("explore-make-select", "value"),
+        State("price-summary-store", "data"),
+        State("makes-models-store", "data"),
+    ],
+)
+def update_price_summary_plot(
+    n_clicks, age_range, price_range, models, makes, price_summary, makes_models
+):
+    # convert models to lower case and replace spaces with dashes
+    models = [model.lower().replace(" ", "-") for model in models]
+
+    price_summary_df = pd.DataFrame.from_dict(price_summary, orient="columns")
+    makes_models_df = pd.DataFrame.from_dict(makes_models, orient="columns")
+
+    price_summary_df = price_summary_df[models + ["age"]]
+
+    if age_range is not None:
+        price_summary_df = price_summary_df.query(
+            "age >= @age_range[0] & age <= @age_range[1]"
+        )
+
+    # melt dataframe to long format with age, model, and price as columns
+    price_summary_df = pd.melt(
+        price_summary_df, id_vars=["age"], var_name="model", value_name="price"
+    )
+
+    # add make to the model field for the legend to be readable
+    price_summary_df = price_summary_df.merge(
+        makes_models_df, left_on="model", right_on="model", how="left"
+    )
+    price_summary_df["model"] = (
+        price_summary_df["model"].str.title()
+        + " ("
+        + price_summary_df["make"].str.replace("-", " ").str.title()
+        + ")"
+    )
+
+    # cast age to int
+    price_summary_df["age"] = price_summary_df["age"].astype(int)
+    # drop rows where price is less than 500
+    price_summary_df = price_summary_df[price_summary_df["price"] > 500]
+
+    price_summary_plot = plot_vehicle_prices_summary(price_summary_df)
+
+    return price_summary_plot
+
     [Input("apply-filters-button", "n_clicks")],
     [
         State("explore-year-slider", "value"),
