@@ -623,9 +623,6 @@ def update_num_ads_summary_plot(
         lambda x: makes_models_df.query("model == @x").make.values[0]
     )
 
-    # filter for a minimum of 200 ads per make
-    num_ads_per_model = num_ads_per_model.query("num_ads > 200")
-
     num_ads_per_model["model"] = (
         num_ads_per_model["model"].str.title()
         + "<br>("
