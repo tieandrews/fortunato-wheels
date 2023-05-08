@@ -5,8 +5,30 @@ import pandas as pd
 import plotly.express as px
 
 
-def plot_vehicle_price_over_time(vehicles_df):
+def hex_to_rgba(hex: str, opacity: float = 1.0):
+    """Converts a hex color code to an rgba color code.
 
+    Parameters
+    ----------
+    hex : str
+        Hex color code.
+
+    Returns
+    -------
+    str
+        RGBA color code.
+    """
+    hex = hex.lstrip("#")
+    hlen = len(hex)
+    return (
+        "rgba("
+        + str(int(hex[: hlen // 3], 16))
+        + ","
+        + str(int(hex[hlen // 3 : 2 * hlen // 3], 16))
+        + ","
+        + str(int(hex[2 * hlen // 3 :], 16))
+        + f",{opacity:.2f})"
+    )
     fig = px.scatter(
         vehicles_df,
         x="year",
