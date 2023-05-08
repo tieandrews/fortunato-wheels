@@ -74,38 +74,93 @@ def plot_vehicle_prices_summary(price_summary_df):
     return fig
 
 
-def plot_vehicle_condition(vehicles_df):
+def plot_mileage_distribution_summary(mileage_summary_df):
+    """Plots the mileage of selected vehicles by their age at posting.
 
+    Parameters
+    ----------
+    mileage_summary_df : pd.DataFrame
+        DataFrame with columns `mileage_per_year` and remaining columns as vehicle model names.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Plotly figure object.
+    """
     fig = (
-        px.histogram(
-            vehicles_df,
-            y="condition",
-            color="condition",
-            text_auto=True,
-            orientation="h",
-            height=300,
+        px.line(
+            mileage_summary_df,
+            x="yearly_mileage_range",
+            y="percent_of_vehicles",
+            color="model",
+            # trendline="lowess",
             labels={
-                "condition": "Vehicle Condition",
+                "yearly_mileage_range": "Avg. Mileage Per Year (km)",
+                "percent_of_vehicles": "Percent of Vehicles (%)",
+                "model": "Vehicle Model",
             },
-            color_discrete_map={
-                "new": "darkgreen",
-                "like new": "lime",
-                "excellent": "greenyellow",
-                "good": "yellow",
-                "fair": "orange",
-                "salvage": "red",
-            },
+            height=300,
         )
-        .update_layout(
-            showlegend=False,
-            xaxis_title="No. of Vehicles",
-            margin=dict(l=5, r=5, t=5, b=5),
+        .update_xaxes(
+            range=[-0.1, mileage_summary_df["yearly_mileage_range"].max() + 0.1]
         )
-        .update_yaxes(
-            categoryorder="array",
-            categoryarray=["salvage", "fair", "good", "excellent", "like new", "new"],
-        )
+        .update_yaxes(range=[0, mileage_summary_df["percent_of_vehicles"].max() + 0.04])
     )
+
+    fig.update_layout(
+        margin=dict(l=5, r=5, t=5, b=5),
+        legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99),
+        # yaxis_ticksuffix="%",  # add percent sign to y-axis
+        yaxis_tickformat=".0%",
+        hovermode="x unified",
+    )
+
+    # inspiration for filled area below line: https://stackoverflow.com/questions/69331683/how-to-fill-in-the-area-below-trendline-in-plotly-express-scatterplot
+    # opacitiy in rgba values fix from here: https://stackoverflow.com/questions/35213766/rgb-transparent-colors-in-plotly-and-r
+    color_list = []
+    for trace in fig.data:
+        x = trace["x"]
+        y = trace["y"]
+        color = hex_to_rgba(trace["line"]["color"], opacity=0.1)
+        color_list.append(hex_to_rgba(trace["line"]["color"]))
+        fig.add_trace(
+            go.Scatter(
+                x=x,
+                y=y,
+                line_color=color,
+                fillcolor=color,
+                mode="lines",
+                opacity=0.1,  # this is just for the line
+                fill="tozeroy",
+                showlegend=False,
+            )
+        )
+    # add a vertical line at the mean milealge for each trace, use colors from traces before,
+    # assumed they are ordered the same
+    # color_index = 0
+    # # to evaluate mean at upper bound of step sizes, add step size to upper bound
+    # yearly_mileage_range_step_size = (
+    #     mileage_summary_df["yearly_mileage_range"].diff().iloc[1]
+    # )
+    # for model in mileage_summary_df["model"].unique():
+    #     mean_mileage = (
+    #         mileage_summary_df.query("model == @model")
+    #         .eval(
+    #             "mean_mileage_per_year = (yearly_mileage_range + @yearly_mileage_range_step_size) * percent_of_vehicles"
+    #         )
+    #         .eval("mean_mileage_per_year = mean_mileage_per_year.sum()")
+    #         .iloc[0]["mean_mileage_per_year"]
+    #     )
+    #     fig.add_vline(
+    #         x=mean_mileage,
+    #         line_width=3,
+    #         line_dash="dot",
+    #         line_color=color_list[color_index],
+    #         annotation_text=f"{mean_mileage/1000:.1f}k",
+    #         annotation_position="top left",
+    #         annotation_font_color=color_list[color_index],
+    #     )
+    #     color_index += 1
 
     return fig
 
