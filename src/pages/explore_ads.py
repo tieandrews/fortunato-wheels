@@ -16,9 +16,7 @@ from dash import Dash, dcc, html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
-import plotly.express as px
-import numpy as np
-import time
+import pandas as pd
 
 cur_dir = os.getcwd()
 try:
@@ -32,13 +30,18 @@ if SRC_PATH not in sys.path:
 
 from src.data.load_preprocess_craigslist import load_craigslist_data
 from src.visualizations.explore_ads_plots import (
-    plot_vehicle_price_over_time,
-    plot_vehicle_condition,
-    plot_odometer_histogram,
+    plot_vehicle_prices_summary,
+    plot_mileage_distribution_summary,
+    plot_num_ads_summary,
 )
+from src.visualizations.utils import blank_placeholder_plot
 from src.pages.dash_styles import SIDEBAR_STYLE, CONTENT_STYLE
+from src.logs import get_logger
 
-vehicles_df = load_craigslist_data()
+INVALID_MODELS = ["other"]
+
+# Create a custom logger
+logger = get_logger(__name__)
 
 filtering_accordion = html.Div(
     dbc.Accordion(
