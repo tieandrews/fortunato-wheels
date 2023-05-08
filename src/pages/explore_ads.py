@@ -267,6 +267,165 @@ layout = html.Div(
 )
 
 
+# update the model select options based on the make select, price, age etc.
+@callback(
+    Output("explore-model-select", "data"),
+    Output("explore-make-select", "data"),
+    Output("explore-price-slider", "max"),
+    Output("explore-price-slider", "value"),
+    [
+        Input("explore-first-load", "children"),
+        Input("explore-make-select", "value"),
+        Input("explore-make-select", "data"),
+        Input("explore-model-select", "value"),
+        Input("explore-model-select", "data"),
+        Input("explore-price-slider", "max"),
+        Input("explore-price-slider", "value"),
+    ],
+    [
+        State("makes-models-store", "data"),
+        State("price-summary-store", "data"),
+        State("num-ads-summary-store", "data"),
+    ],
+)
+def update_filter_options(
+    _first_load,
+    make_values,
+    make_options,
+    model_values,
+    model_options,
+    price_slider_max,
+    price_slider_values,
+    makes_models_store,
+    price_summary_store,
+    num_ads_summary_store,
+):
+    """Update the data filtering options based on the selected make, model, price, age etc.
+
+    Parameters
+    ----------
+    _first_load : bool
+        True if this is the first time the page is loaded
+    make_values : list
+        List of selected makes from the drop down.
+    make_options : list
+        List of all available makes.
+    model_values : list
+        List of selected models from the drop down.
+    model_options : list
+        List of all available models.
+    price_slider_max : int
+        Maximum value of the price slider.
+    price_slider_values : list
+        List of values of the price slider.
+    makes_models_store : dict
+        Dictionary of makes and models.
+    price_summary_store : dict
+        Dictionary of price prices with columns being model names and rows being price bins
+        by age of vehicle at posting in 'age' column
+    num_ads_summary_store : dict
+        Dictionary of number of ads summary with columns being model names and rows being bins
+        of how many ads by age of vehicles at posting in 'age' column
+
+    Returns
+    -------
+    make_options : dict
+        List of all available makes and always has all makes available with number of ads
+        for each make in the 'label' field.
+    model_options : dict
+        List of all available models and is updated based on the makes selected with number of ads
+        for each model in the 'label' field.
+    price_slider_max : int
+        Maximum value of the price slider is updated if the user hasn't changed it, otherwise it remains as previously set.
+    price_slider_values : list
+        List of values of the price slider is set at, if the price range changes based
+        on the selected makes and models, then the price slider is reset to the new range.
+    """
+    make_model_df = pd.DataFrame.from_dict(makes_models_store, orient="columns")
+    price_summary_df = pd.DataFrame.from_dict(price_summary_store, orient="columns")
+    num_ads_summary_df = pd.DataFrame.from_dict(num_ads_summary_store, orient="columns")
+
+    # if make options is None, then we set it to all makes and always allow all makes selectable
+    if make_options is None:
+        make_options = make_model_df.make.unique().tolist()
+        make_options.sort()
+        models_list = (
+            make_model_df.query("model not in @INVALID_MODELS").model.unique().tolist()
+        )
+        num_ads_per_make = (
+            num_ads_summary_df[models_list].sum(axis=0).to_frame(name="num_ads")
+        )
+        num_ads_per_make["model"] = models_list
+        # ad the matching make for each model to the dataframe
+        num_ads_per_make["make"] = num_ads_per_make.model.apply(
+            lambda x: make_model_df.query("model == @x").make.values[0]
+        )
+        num_ads_per_make = num_ads_per_make.groupby("make", as_index=False).agg(
+            {"num_ads": "sum"}
+        )
+        # filter for a minimum of 200 ads per make
+        num_ads_per_make = num_ads_per_make.query("num_ads > 200")
+
+        make_options = [
+            {
+                "label": f'{make.replace("-", " ").title()} ({num_ads/1000:.1f}k ads)',
+                "value": make,
+            }
+            for make, num_ads in zip(num_ads_per_make.make, num_ads_per_make.num_ads)
+        ]
+
+    # if model options is not initialized or no make is selected, then we set it to all models
+    if (model_options is None) or (len(make_values) == 0):
+        models_list = (
+            make_model_df.query("model not in @INVALID_MODELS").model.unique().tolist()
+            + model_values
+        )
+        models_list.sort()
+    # if a make is selected then retrun model_options only of that make but
+    # keep the current model_values visible in the list
+    elif len(make_values) > 0:
+        models_list = (
+            make_model_df.query("make == @make_values & model not in @INVALID_MODELS")
+            .model.unique()
+            .tolist()
+            + model_values
+        )
+        models_list.sort()
+    # generate the model options
+    num_ads_per_model = (
+        num_ads_summary_df[models_list].sum(axis=0).to_frame(name="num_ads")
+    )
+    num_ads_per_model["model"] = models_list
+
+    num_ads_per_model = num_ads_per_model.query("num_ads > 10")
+
+    # create the model options for the drop down including number of ads per model
+    model_options = [
+        {
+            "label": f'{model.replace("-", " ").title()} ({num_ads} ads)',
+            "value": model,
+        }
+        for model, num_ads in zip(num_ads_per_model.model, num_ads_per_model.num_ads)
+    ]
+
+    # get max price for price slider
+    if len(model_values) > 0:
+        max_price = price_summary_df[model_values].max().max()
+    elif len(make_values) > 0:
+        models = make_model_df.query(
+            "make in @make_values & model not in @INVALID_MODELS"
+        ).model.unique()
+        max_price = price_summary_df[models].max().max()
+    else:
+        max_price = price_summary_df.max().max()
+
+    # if price slider has not been adjusted, set it to include the full range of prices
+    if price_slider_values[1] == price_slider_max:
+        price_slider_values[1] = max_price
+
+    return model_options, make_options, max_price, price_slider_values
+
+
 @callback(
     Output("num-matching-entries", "children"),
     [
