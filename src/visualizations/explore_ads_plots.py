@@ -69,7 +69,6 @@ def plot_vehicle_prices_summary(price_summary_df):
         ),
         margin=dict(l=5, r=5, t=5, b=5),
         legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99),
-        hovermode="x unified",
     )
 
     return fig
@@ -113,7 +112,6 @@ def plot_mileage_distribution_summary(mileage_summary_df):
         legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99),
         # yaxis_ticksuffix="%",  # add percent sign to y-axis
         yaxis_tickformat=".0%",
-        hovermode="x unified",
     )
 
     # inspiration for filled area below line: https://stackoverflow.com/questions/69331683/how-to-fill-in-the-area-below-trendline-in-plotly-express-scatterplot
