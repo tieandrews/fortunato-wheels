@@ -4,6 +4,14 @@
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
+
+pio.templates["explore_ads"] = go.layout.Template(
+    layout=go.Layout(
+        font_family="Poppins",
+    )
+)
+pio.templates.default = "plotly+explore_ads"
 
 
 def hex_to_rgba(hex: str, opacity: float = 1.0):
