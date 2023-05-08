@@ -131,6 +131,7 @@ app.layout = html.Div(
         dcc.Store(id="price-summary-store", storage_type="session"),
         dcc.Store(id="num-ads-summary-store", storage_type="session"),
         dcc.Store(id="mileage-summary-store", storage_type="session"),
+        dcc.Store(id="makes-models-store", storage_type="session"),
         html.Div(
             className="div-app",
             id="div-app",
@@ -176,6 +177,7 @@ app.index_string = """<!DOCTYPE html>
 </html>
 """
 
+
 # add callback for toggling the collapse on small screens
 @app.callback(
     Output("navbar-collapse", "is_open"),
@@ -193,6 +195,7 @@ def toggle_navbar_collapse(n, is_open):
     Output("price-summary-store", "data"),
     Output("num-ads-summary-store", "data"),
     Output("mileage-summary-store", "data"),
+    Output("makes-models-store", "data"),
     Input("first-load", "children"),
     [
         State("price-summary-store", "data"),
@@ -201,10 +204,8 @@ def toggle_navbar_collapse(n, is_open):
     ],
 )
 def load_data(first_load, price_summary, num_ads_summary, mileage_summary):
-
     # if any summary is None, then we need to load data
     if not price_summary or not num_ads_summary or not mileage_summary:
-
         start_time = time.time()
         azure_blob = AzureBlob()
         ad_price_summary = azure_blob.load_parquet(
@@ -216,10 +217,13 @@ def load_data(first_load, price_summary, num_ads_summary, mileage_summary):
         num_ads_summary = azure_blob.load_parquet(
             "processed/num_ads_summary.parquet"
         ).to_dict()
-        logger.info(
+        makes_models = azure_blob.load_parquet(
+            "processed/makes_models.parquet"
+        ).to_dict()
+        logger.debug(
             f"Loaded data from Azure Blob Storage in {time.time() - start_time} seconds"
         )
-        return ad_price_summary, num_ads_summary, mileage_summary
+        return ad_price_summary, num_ads_summary, mileage_summary, makes_models
     else:
         logger.debug("Data already loaded, skipping")
         raise dash.exceptions.PreventUpdate
