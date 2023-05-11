@@ -417,9 +417,6 @@ def update_ad_filter_count(
     num_ads_summary_df = pd.DataFrame.from_dict(num_ads_summary_dict, orient="columns")
     makes_models_df = pd.DataFrame.from_dict(makes_models_dict, orient="columns")
 
-    if price_range is None:
-        price_range = [0, vehicles_df.price.max()]
-
     if (len(models) == 0) & (len(makes) == 0):
         # remove some models that are not really models
         models = (
@@ -436,9 +433,6 @@ def update_ad_filter_count(
 
     if len(makes) == 0:
         makes = makes_models_df.make.unique()
-
-    if age_range is None:
-        age_range = [vehicles_df.year.min(), vehicles_df.year.max()]
 
     matching_ads = (
         num_ads_summary_df.query("age >= @age_range[0] & age <= @age_range[1]")[models]
