@@ -10,9 +10,6 @@ import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 import time
 
-from logs import get_logger
-from data.azure_blob_storage import AzureBlob
-
 # on launch ensure src is in path
 cur_dir = os.getcwd()
 try:
@@ -23,6 +20,10 @@ except ValueError:
     pass
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
+
+from logs import get_logger
+from data.azure_blob_storage import AzureBlob
+from analytics.google_analytics import custom_event_to_GA
 
 # Create a custom logger
 logger = get_logger(__name__)
@@ -217,23 +218,58 @@ def toggle_navbar_collapse(n, is_open):
 def load_data(first_load, price_summary, num_ads_summary, mileage_summary):
     # if any summary is None, then we need to load data
     if not price_summary or not num_ads_summary or not mileage_summary:
-        start_time = time.time()
         azure_blob = AzureBlob()
+
+        # placeholder until proper gtag id's can be extracted
+        client_id = str(time.time_ns())
+
+        start_time = time.time()
         ad_price_summary = azure_blob.load_parquet(
             "processed/avg_price_summary.parquet"
         ).to_dict()
+        custom_event_to_GA(
+            client_id,
+            "price_data_load_time",
+            {"time_ms": round((time.time() - start_time) * 1000, 0)},
+        )
+        logger
+
+        start_time = time.time()
         mileage_summary = azure_blob.load_parquet(
             "processed/mileage_distribution_summary.parquet"
         ).to_dict()
+        custom_event_to_GA(
+            client_id,
+            "mileage_data_load_time",
+            {"time_ms": round((time.time() - start_time) * 1000, 0)},
+        )
+
+        start_time = time.time()
         num_ads_summary = azure_blob.load_parquet(
             "processed/num_ads_summary.parquet"
         ).to_dict()
+        custom_event_to_GA(
+            client_id,
+            "num_ads_data_load_time",
+            {"time_ms": round((time.time() - start_time) * 1000, 0)},
+        )
+
+        start_time = time.time()
         makes_models = azure_blob.load_parquet(
             "processed/makes_models.parquet"
         ).to_dict()
+        custom_event_to_GA(
+            client_id,
+            "makes_models_data_load_time",
+            {"time_ms": round((time.time() - start_time) * 1000, 0)},
+        )
+
         logger.debug(
             f"Loaded data from Azure Blob Storage in {time.time() - start_time} seconds"
         )
+
+        custom_event_to_GA(time.time_ns(), "summary_data_load_time", {})
+
         return ad_price_summary, num_ads_summary, mileage_summary, makes_models
     else:
         logger.debug("Data already loaded, skipping")
