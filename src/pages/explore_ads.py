@@ -17,6 +17,7 @@ import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
 from dash_iconify import DashIconify
 import pandas as pd
+import time
 
 from src.visualizations.explore_ads_plots import (
     plot_vehicle_prices_summary,
@@ -317,6 +318,8 @@ def update_filter_options(
         List of values of the price slider is set at, if the price range changes based
         on the selected makes and models, then the price slider is reset to the new range.
     """
+    start_time = time.time()
+
     make_model_df = pd.DataFrame.from_dict(makes_models_store, orient="columns")
     price_summary_df = pd.DataFrame.from_dict(price_summary_store, orient="columns")
     num_ads_summary_df = pd.DataFrame.from_dict(num_ads_summary_store, orient="columns")
@@ -399,6 +402,14 @@ def update_filter_options(
     if price_slider_values[1] == price_slider_max:
         price_slider_values[1] = max_price
 
+    log_success = log_to_GA_list_of_items(
+        event_name="explore_update_filters_time",
+        item_name="time_ms",
+        list_of_items=[int((time.time() - start_time) * 1000)],
+    )
+    logger.debug(
+        f"explore_update_filters_time log success - {log_success}: {int((time.time() - start_time) * 1000)}"
+    )
     return model_options, make_options, max_price, price_slider_values
 
 
@@ -416,6 +427,8 @@ def update_filter_options(
 def update_ad_filter_count(
     age_range, price_range, models, makes, num_ads_summary_dict, makes_models_dict
 ):
+    start_time = time.time()
+
     num_ads_summary_df = pd.DataFrame.from_dict(num_ads_summary_dict, orient="columns")
     makes_models_df = pd.DataFrame.from_dict(makes_models_dict, orient="columns")
 
@@ -462,6 +475,14 @@ def update_ad_filter_count(
             ),
         ]
     )
+    log_success = log_to_GA_list_of_items(
+        event_name="explore_matching_ads_update_time",
+        item_name="time_ms",
+        list_of_items=[int((time.time() - start_time) * 1000)],
+    )
+    logger.debug(
+        f"explore_matching_ads_update_time log success - {log_success}: {int((time.time() - start_time) * 1000)}"
+    )
 
     return num_matching_entries
 
@@ -481,6 +502,7 @@ def update_ad_filter_count(
 def update_price_summary_plot(
     n_clicks, age_range, price_range, models, makes, price_summary, makes_models
 ):
+    start_time = time.time()
     # if no models selected, display the default models
     if len(models) == 0:
         models = DEFAULT_MODELS
@@ -537,6 +559,15 @@ def update_price_summary_plot(
 
     price_summary_plot = plot_vehicle_prices_summary(price_summary_df)
 
+    log_success = log_to_GA_list_of_items(
+        event_name="explore_price_age_summary_update_time",
+        item_name="time_ms",
+        list_of_items=[int((time.time() - start_time) * 1000)],
+    )
+    logger.debug(
+        f"explore_price_age_summary_update_time log success - {log_success}: {int((time.time() - start_time) * 1000)}"
+    )
+
     return price_summary_plot
 
 
@@ -555,6 +586,7 @@ def update_price_summary_plot(
 def update_mileage_summary_plot(
     n_clicks, year_range, price_range, models, makes, mileage_summary, makes_models
 ):
+    start_time = time.time()
     # if no models selected, display the default models
     if len(models) == 0:
         models = DEFAULT_MODELS
@@ -598,6 +630,15 @@ def update_mileage_summary_plot(
 
     mileage_summary_plot = plot_mileage_distribution_summary(mileage_summary_df)
 
+    log_success = log_to_GA_list_of_items(
+        event_name="explore_mileage_summary_update_time",
+        item_name="time_ms",
+        list_of_items=[int((time.time() - start_time) * 1000)],
+    )
+    logger.debug(
+        f"explore_mileage_summary_update_time log success - {log_success}: {int((time.time() - start_time) * 1000)}"
+    )
+
     return mileage_summary_plot
 
 
@@ -616,6 +657,7 @@ def update_mileage_summary_plot(
 def update_num_ads_summary_plot(
     n_clicks, age_range, price_range, models, makes, num_ads_summary, makes_models
 ):
+    start_time = time.time()
     # if no models selected, display the default models
     if len(models) == 0:
         models = DEFAULT_MODELS
@@ -649,5 +691,14 @@ def update_num_ads_summary_plot(
     )
 
     num_ads_summary_plot = plot_num_ads_summary(num_ads_per_model)
+
+    log_success = log_to_GA_list_of_items(
+        event_name="explore_num_ads_summary_update_time",
+        item_name="time_ms",
+        list_of_items=[int((time.time() - start_time) * 1000)],
+    )
+    logger.debug(
+        f"explore_num_ads_summary_update_time log success - {log_success}: {int((time.time() - start_time) * 1000)}"
+    )
 
     return num_ads_summary_plot
