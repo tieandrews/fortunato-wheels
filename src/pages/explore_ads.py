@@ -26,9 +26,11 @@ from src.visualizations.explore_ads_plots import (
 from src.visualizations.utils import blank_placeholder_plot
 from src.pages.dash_styles import SIDEBAR_STYLE, CONTENT_STYLE
 from src.logs import get_logger
+from src.analytics.google_analytics import log_to_GA_list_of_items
 
 INVALID_MODELS = ["other"]
 DEFAULT_MODELS = ["ghost", "model-x", "911", "m3"]
+DEFAULT_MAKES = []
 
 # Create a custom logger
 logger = get_logger(__name__)
@@ -476,6 +478,22 @@ def update_price_summary_plot(
     # if no models selected, display the default models
     if len(models) == 0:
         models = DEFAULT_MODELS
+
+    # log to GA the currently selected models & makes
+    log_model_success = log_to_GA_list_of_items(
+        event_name="explore_apply_filters_click",
+        item_name="model",
+        # remove default models from list of models
+        list_of_items=[model for model in models if model not in DEFAULT_MODELS],
+    )
+    logger.debug(f"GA logging success for models: {log_model_success}")
+
+    log_make_success = log_to_GA_list_of_items(
+        event_name="explore_apply_filters_click",
+        item_name="make",
+        list_of_items=[make for make in makes if make not in DEFAULT_MAKES],
+    )
+    logger.debug(f"GA logging success for makes: {log_make_success}")
 
     # convert models to lower case and replace spaces with dashes
     models = [model.lower().replace(" ", "-") for model in models]
