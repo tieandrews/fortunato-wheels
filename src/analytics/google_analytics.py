@@ -74,8 +74,6 @@ def custom_event_to_GA(client_id: str, event_name: str, event_params: dict):
 
     r = requests.post(url, data=json.dumps(payload), verify=True)
 
-    print(r.status_code)
-
 
 def get_ga4_client_id():
     """Placeholder function to return a client id for google analytics
