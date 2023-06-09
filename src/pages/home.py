@@ -100,7 +100,6 @@ analyze_ad_card = dbc.Card(
                         ],
                         variant="gradient",
                         gradient={"from": "indigo", "to": "cyan"},
-                        disabled=True,
                         size="xl",
                         radius="xl",
                         fullWidth=True,
@@ -111,7 +110,7 @@ analyze_ad_card = dbc.Card(
                             "margin-bottom": "10px",
                         },
                     ),
-                    href="/",
+                    href="analyze-ads",
                 ),
             ],
             className="align-self-center",
@@ -151,7 +150,7 @@ layout = dbc.Container(  # html.Div(
                     ),
                     dmc.Divider(
                         size="sm",
-                        class_name=".h4",
+                        className=".h4",
                         labelPosition="center",
                     ),
                     html.H5(
