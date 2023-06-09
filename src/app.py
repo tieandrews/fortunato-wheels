@@ -80,18 +80,20 @@ nav_buttons = dbc.Row(
                     ),
                     href="explore-ads",
                 ),
-                dmc.Button(
-                    "(BETA) Analyze an Ad",
-                    leftIcon=[
-                        DashIconify(
-                            icon="material-symbols:lab-research-outline-rounded",
-                            width=25,
-                        )
-                    ],
-                    variant="gradient",
-                    gradient={"from": "indigo", "to": "cyan"},
-                    disabled=True,
-                    style={"margin-right": "5px", "margin-left": "5px"},
+                dmc.Anchor(
+                    dmc.Button(
+                        "(BETA) Analyze an Ad",
+                        leftIcon=[
+                            DashIconify(
+                                icon="material-symbols:lab-research-outline-rounded",
+                                width=25,
+                            )
+                        ],
+                        variant="gradient",
+                        gradient={"from": "indigo", "to": "cyan"},
+                        style={"margin-right": "5px", "margin-left": "5px"},
+                    ),
+                    href="analyze-ads",
                 ),
             ],
             width="auto",
