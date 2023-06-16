@@ -101,7 +101,7 @@ step2_layout = html.Div(
         dbc.Col(
             [
                 dmc.NumberInput(
-                    label="Price ($CAD)",
+                    label="Advertised Price ($CAD)",
                     id="vehicle-price-input",
                     required=True,
                     persistence=True,
@@ -257,13 +257,16 @@ layout = html.Div(
                         html.H1("Analyze an Ad", style={"text-align": "center"}),
                         html.Br(),
                         html.P(
-                            "Use this page to analyze ads and figure out whether the car you're looking at is steal or a ripoff.",
+                            "Figure out whether the car you're looking at is a steal or a ripoff using our AI model.",
                             style={"text-align": "center"},
                         ),
                         html.Hr(),
                     ]
                 ),
                 stepper,
+                html.Div(
+                    style={"height": "40vh"},
+                ),
             ],
             width={"size": 12, "offset": 0},
             lg={"size": 6, "offset": 3},
@@ -525,14 +528,6 @@ def generate_price_results(
                         "displayModeBar": False,
                     },
                 ),
-                # html.H3(
-                #     f"For a {year} {make.title()} {model.title()} the predicted price is:",
-                #     style={"text-align": "center"},
-                # ),
-                # html.H1(
-                #     f"${pred_price:,.0f}",
-                #     style={"text-align": "center", "font-weight": "bold"},
-                # ),
                 html.Br(),
                 html.Div(
                     [
@@ -551,16 +546,26 @@ def generate_price_results(
                                 html.Div(
                                     [
                                         html.H6(
-                                            "Mileage:  ",
-                                            style={"text-align": "right"},
+                                            # add horizantal white space after the word Mileage
+                                            "Mileage:",
+                                            style={
+                                                "text-align": "right",
+                                                "margin-right": "10px",
+                                            },
                                         ),
                                         html.H6(
-                                            "Year:  ",
-                                            style={"text-align": "right"},
+                                            "Year:",
+                                            style={
+                                                "text-align": "right",
+                                                "margin-right": "10px",
+                                            },
                                         ),
                                         html.H6(
-                                            "Wheel System:  ",
-                                            style={"text-align": "right"},
+                                            "Wheel System:",
+                                            style={
+                                                "text-align": "right",
+                                                "margin-right": "10px",
+                                            },
                                         ),
                                     ],
                                     style={"width": "50%", "display": "inline-block"},
@@ -597,10 +602,6 @@ def generate_price_results(
                     config={
                         "displayModeBar": False,
                     },
-                ),
-                # add a large empty div to allow scrolling down easier
-                html.Div(
-                    style={"height": "100vh"},
                 ),
             ]
         )
