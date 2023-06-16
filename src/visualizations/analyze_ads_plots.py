@@ -363,10 +363,16 @@ def determine_price_quality_title(price, predicted_price, upper_ci, lower_ci):
     elif price < lower_deal_limit:
         return "Great Deal 😲", "That's a good price!"
     elif (price >= lower_deal_limit) & (price < upper_deal_limit):
-        return "Fair Price👌", "You're in the right ball park."
+        return "Fair Price👌", "It's in the right ball park."
     elif (price >= upper_deal_limit) & (price < upper_ci):
-        return "Not a Great Deal 🧐", "You're paying a bit more than you should."
+        return "Not a Great Deal 🧐", "It's a little pricey."
     elif price >= upper_ci:
-        return "Seems like a Rip Off 🤡", "That's gonna be a no from me dog."
+        return (
+            "Seems like a Rip Off 🤡",
+            "Watch out for clowns, you might be getting ripped off!",
+        )
     else:
-        return "Somethings Gone Wrong!", "Maybe go touch grass for a minute..."
+        return (
+            "Somethings Gone Wrong!",
+            "Maybe go touch grass for a minute while we sort this out...",
+        )
