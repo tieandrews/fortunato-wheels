@@ -101,7 +101,7 @@ step2_layout = html.Div(
         dbc.Col(
             [
                 dmc.NumberInput(
-                    label="Price ($CAD)",
+                    label="Advertised Price ($CAD)",
                     id="vehicle-price-input",
                     required=True,
                     persistence=True,
@@ -257,13 +257,16 @@ layout = html.Div(
                         html.H1("Analyze an Ad", style={"text-align": "center"}),
                         html.Br(),
                         html.P(
-                            "Use this page to analyze ads and figure out whether the car you're looking at is steal or a ripoff.",
+                            "Figure out whether the car you're looking at is a steal or a ripoff using our AI model.",
                             style={"text-align": "center"},
                         ),
                         html.Hr(),
                     ]
                 ),
                 stepper,
+                html.Div(
+                    style={"height": "40vh"},
+                ),
             ],
             width={"size": 12, "offset": 0},
             lg={"size": 6, "offset": 3},
@@ -600,7 +603,7 @@ def generate_price_results(
                 ),
                 # add a large empty div to allow scrolling down easier
                 html.Div(
-                    style={"height": "100vh"},
+                    style={"height": "50vh"},
                 ),
             ]
         )
