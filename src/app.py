@@ -117,7 +117,6 @@ navbar = dbc.Navbar(
                                 height="40px",
                             )
                         ),
-                        # dbc.Col(dbc.NavbarBrand("Fortunato WHe", className="ms-2")),
                     ],
                     align="center",
                     className="g-0",
@@ -138,6 +137,57 @@ navbar = dbc.Navbar(
     dark=True,
 )
 
+logo = html.Img(
+    src="/assets/fortunato-wheels_logo_white.png",
+    height="35px",
+    style={"margin-top": "10px", "margin-bottom": "10px"},
+    # on medium screen hide logo
+    className="d-none d-lg-block",
+)
+
+# About page link
+about_link = dbc.Col(
+    dbc.NavLink("About", href="/about", style={"color": "white"}),
+    width={"size": 12},
+    lg={"size": 4},
+)
+
+footer = dbc.Navbar(
+    [
+        dbc.Col(logo, width=0, lg=4),
+        dbc.Col(
+            "Copyright " + "\u00A9" + " 2023 Fortunato Wheels. All Rights Reserved",
+            style={"textAlign": "center", "font-size": "0.8rem", "color": "white"},
+            width=12,
+            md=4,
+        ),
+        dbc.Col(
+            [
+                dbc.NavLink(
+                    "(BETA) Analyze an Ad",
+                    href="/analyze-ads",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "Explore Past Ads",
+                    href="/explore-ads",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "Home",
+                    href="/",
+                    style={"color": "white"},
+                ),
+            ],
+            width=12,
+            lg=4,
+            style={"textAlign": "center"},
+        ),
+    ],
+    color="secondary",
+    dark=True,
+)
+
 # put navbar in standard html.Div to till width of page
 app.layout = html.Div(
     children=[
@@ -155,6 +205,7 @@ app.layout = html.Div(
                     children=[dash.page_container],
                     fluid=True,
                 ),
+                footer,
             ],
         ),
     ],
