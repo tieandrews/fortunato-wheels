@@ -40,6 +40,19 @@ app = dash.Dash(
     title="fortunato-wheels",
 )
 
+navbar_logo = html.Img(
+    src="/assets/fortunato-wheels_logo_white.png",
+    height="40px",
+    # style={"margin-top": "10px", "margin-bottom": "10px"},
+)
+
+logo = html.Img(
+    src="/assets/fortunato-wheels_logo_white.png",
+    height="40px",
+    style={"margin-top": "10px", "margin-bottom": "10px"},
+    # on medium screen hide logo
+    className="d-none d-lg-block",
+)
 
 server = app.server
 
@@ -78,7 +91,7 @@ nav_buttons = dbc.Row(
                         ],
                         style={"margin-right": "5px", "margin-left": "5px"},
                     ),
-                    href="explore-ads",
+                    href="/explore-ads",
                 ),
                 dmc.Anchor(
                     dmc.Button(
@@ -93,7 +106,37 @@ nav_buttons = dbc.Row(
                         gradient={"from": "indigo", "to": "cyan"},
                         style={"margin-right": "5px", "margin-left": "5px"},
                     ),
-                    href="analyze-ads",
+                    href="/analyze-ads",
+                ),
+                dmc.Anchor(
+                    dmc.Button(
+                        "Blog",
+                        leftIcon=[
+                            DashIconify(
+                                icon="mdi:learn-outline",
+                                width=25,
+                            )
+                        ],
+                        variant="gradient",
+                        gradient={"from": "indigo", "to": "cyan"},
+                        style={"margin-right": "5px", "margin-left": "5px"},
+                    ),
+                    href="/blog",
+                ),
+                dmc.Anchor(
+                    dmc.Button(
+                        "About",
+                        leftIcon=[
+                            DashIconify(
+                                icon="mingcute:information-line",
+                                width=25,
+                            )
+                        ],
+                        variant="gradient",
+                        gradient={"from": "indigo", "to": "cyan"},
+                        style={"margin-right": "5px", "margin-left": "5px"},
+                    ),
+                    href="/about",
                 ),
             ],
             width="auto",
@@ -112,10 +155,7 @@ navbar = dbc.Navbar(
                 dbc.Row(
                     [
                         dbc.Col(
-                            html.Img(
-                                src="assets/fortunato-wheels_logo_white.png",
-                                height="40px",
-                            )
+                            navbar_logo,
                         ),
                     ],
                     align="center",
@@ -135,14 +175,6 @@ navbar = dbc.Navbar(
     ),
     color="primary",
     dark=True,
-)
-
-logo = html.Img(
-    src="/assets/fortunato-wheels_logo_white.png",
-    height="35px",
-    style={"margin-top": "10px", "margin-bottom": "10px"},
-    # on medium screen hide logo
-    className="d-none d-lg-block",
 )
 
 # About page link
@@ -176,6 +208,16 @@ footer = dbc.Navbar(
                 dbc.NavLink(
                     "Home",
                     href="/",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "Blog",
+                    href="/blog",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "About",
+                    href="/about",
                     style={"color": "white"},
                 ),
             ],
