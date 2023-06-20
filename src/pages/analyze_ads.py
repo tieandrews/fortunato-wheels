@@ -265,7 +265,7 @@ layout = html.Div(
                 ),
                 stepper,
                 html.Div(
-                    style={"height": "40vh"},
+                    style={"height": "60vh"},
                 ),
             ],
             width={"size": 12, "offset": 0},
