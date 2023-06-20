@@ -14,3 +14,4 @@ dash-loading-spinners~=1.0
 azure-storage-blob~=12.16
 azure-identity~=1.12
 python-dotenv~=1.0
+python-frontmatter~=1.0
