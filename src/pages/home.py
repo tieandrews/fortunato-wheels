@@ -181,7 +181,7 @@ layout = dbc.Container(  # html.Div(
             )
         ),
         html.Div(
-            style={"height": "20vh"},
+            style={"height": "40vh"},
         ),
     ],
     fluid=True,
