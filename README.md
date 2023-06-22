@@ -1,5 +1,12 @@
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![codecov][codecov-shield]][codecov-url]
+
 # Fortunato Wheels
-(Fortunato: Latin word for "lucky")
+(Fortunato: Latin for "lucky")
 
 Fortunato wheels takes the guesswork out of buying a used car. It does this by compiling datasets of used cars from multiple websites, analyzing the data to identify trends and baselines for car prices, then make this information available to users in an interactive tool to evaluate car prices.
 
@@ -29,3 +36,16 @@ To start using Fortunato wheels you can browse through our database of used car 
 ## References
 
 - Craigslist Used Cars Dataset, Austin Reese, https://www.kaggle.com/datasets/austinreese/craigslist-carstrucks-data
+
+[contributors-shield]: https://img.shields.io/github/contributors/tieandrews/fortunato-wheels.svg?style=for-the-badge
+[contributors-url]: https://github.com/tieandrews/fortunato-wheels/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/tieandrews/fortunato-wheels.svg?style=for-the-badge
+[forks-url]: https://github.com/tieandrews/fortunato-wheels/network/members
+[stars-shield]: https://img.shields.io/github/stars/tieandrews/fortunato-wheels.svg?style=for-the-badge
+[stars-url]: https://github.com/tieandrews/fortunato-wheels/stargazers
+[issues-shield]: https://img.shields.io/github/issues/tieandrews/fortunato-wheels.svg?style=for-the-badge
+[issues-url]: https://github.com/tieandrews/fortunato-wheels/issues
+[license-shield]: https://img.shields.io/github/license/tieandrews/fortunato-wheels.svg?style=for-the-badge
+[license-url]: https://github.com/tieandrews/fortunato-wheels/blob/master/LICENSE.txt
+[codecov-shield]: https://img.shields.io/codecov/c/github/tieandrews/fortunato-wheels?style=for-the-badge
+[codecov-url]: https://codecov.io/gh/tieandrews/fortunato-wheels
