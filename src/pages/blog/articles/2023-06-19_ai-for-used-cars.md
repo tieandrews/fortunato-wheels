@@ -8,8 +8,6 @@ image: /assets/2023-06-19-ai-for-used-cars/ai-used-cars-image_wide.jpg
 date: 2023-06-09
 ---
 
-# How we use AI to Price Used Cars
-
 If you're reading this, you're probably A) looking to buy a used car, or B) looking to sell a used car. Either way, you're in the right place, we're here to shed light onto what contributes to vehicle prices and hopefully this article will give you some insight into how we use AI and machine learning to predict the price of used cars.
 
 ## Where We Get Our Data
