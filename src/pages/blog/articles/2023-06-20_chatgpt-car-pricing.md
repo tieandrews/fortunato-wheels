@@ -8,20 +8,17 @@ image: /assets/2023-06-20_chatgpt-car-pricing/dalle-robot-negotiating-car-price.
 date: 2023-06-20
 ---
 
-# Can ChatGPT Buy Used Cars and Turn a Profit?
-
-Welcome to this weeks blog, where we dive into the fascinating world of buying and pricing used cars! Today, we explore an intriguing question: Can ChatGPT, an advanced AI language model, price vehicles accurately and potentially turn a profit? Join us on this journey as we unravel the potential of AI technology in the automotive world.
+Welcome to this weeks blog, where we dive into the fascinating world of buying and pricing used cars! Today, we explore an intriguing question: Can ChatGPT, an advanced AI language model, price vehicles accurately and potentially buy cars? Join us on this journey as we unravel the potential of AI technology in the automotive world.
 
 **Contents:**
 
-- [Can ChatGPT Buy Used Cars and Turn a Profit?](#can-chatgpt-buy-used-cars-and-turn-a-profit)
-  - [The Rise of AI (a.k.a. ChatGPT)](#the-rise-of-ai-aka-chatgpt)
-  - [How Does ChatGPT Price Cars?](#how-does-chatgpt-price-cars)
-  - [Bing's Aftermarket Upgrades on ChatGPT](#bings-aftermarket-upgrades-on-chatgpt)
-  - [How does it Compare to Fortunato Wheels?](#how-does-it-compare-to-fortunato-wheels)
-  - [ChatGPT is Down but Not Out: LangChain](#chatgpt-is-down-but-not-out-langchain)
-  - [Conclusion: Rise of the Bots?](#conclusion-rise-of-the-bots)
-  - [Links](#links)
+- [The Rise of AI (a.k.a. ChatGPT)](#the-rise-of-ai-aka-chatgpt)
+- [How Does ChatGPT Price Cars?](#how-does-chatgpt-price-cars)
+- [Bing's Aftermarket Upgrades on ChatGPT](#bings-aftermarket-upgrades-on-chatgpt)
+- [How does it Compare to Fortunato Wheels?](#how-does-it-compare-to-fortunato-wheels)
+- [ChatGPT is Down but Not Out: LangChain](#chatgpt-is-down-but-not-out-langchain)
+- [Conclusion: Rise of the Bots?](#conclusion-rise-of-the-bots)
+- [Links](#links)
 
 ## The Rise of AI (a.k.a. ChatGPT)
 
@@ -47,7 +44,7 @@ This is much better! Bing was able to find a listing for a 2020 Honda CRV with 8
 
 ## How does it Compare to Fortunato Wheels?
 
-We took the middle of Bing's price estimate (~$26k CAD) and fed it into our tool and it looks like ChatGPT might be a ways off!
+We took the middle of Bing's price estimate (~$37k CAD) and fed it into our tool and it looks like ChatGPT might be a ways off!
 
 ![Fortunato Wheels pricing a Honda CRV](../../../assets/2023-06-20_chatgpt-car-pricing/fwheels-honda-crv-price.png#article)
 
