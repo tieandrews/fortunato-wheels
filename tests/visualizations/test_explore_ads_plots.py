@@ -2,15 +2,9 @@
 # Date: 2023-05-08
 import os, sys
 import pytest
-
-# on launch ensure src is in path
-cur_dir = os.getcwd()
-try:
-    SRC_PATH = cur_dir[: cur_dir.index("fortunato-wheels") + len("fortunato-wheels")]
-except ValueError:
-    # deal with Azure app service not working with relative imports
-    SRC_PATH = ""
-    pass
+   
+# ensure that the parent directory is on the path for relative imports
+SRC_PATH = sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
 
