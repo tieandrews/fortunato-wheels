@@ -8,6 +8,7 @@ dash.register_page(
 )
 
 from dash import html
+import os
 import dash_bootstrap_components as dbc
 
 from src.logs import get_logger
@@ -27,7 +28,13 @@ layout = html.Div(
                             "Fortunato Wheels helps individuals find the best price on a used car. Our goal is to provide accurate and reliable information to you, our users, so that you can make informed, unbiassed decisions when purchasing a used car."
                         ),
                         html.Img(
-                            src="https://images.unsplash.com/photo-1541443131876-44b03de101c5",
+                            src=os.path.join(
+                                os.pardir,
+                                os.pardir,
+                                "assets",
+                                "2023-06-19-ai-for-used-cars",
+                                "fwheel-analyze-ads-page.png",
+                            ),
                             style={
                                 "width": "100%",
                                 "border-radius": "10px",
