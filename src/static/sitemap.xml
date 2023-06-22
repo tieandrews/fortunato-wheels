@@ -20,4 +20,28 @@
         <changefreq>always</changefreq>
         <priority>0.5</priority>
     </url>
+    <url>
+        <loc>https://www.fortunatowheels.com/blog</loc>
+        <lastmod>2023-06-19</lastmod>
+        <changefreq>always</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://www.fortunatowheels.com/about</loc>
+        <lastmod>2023-06-19</lastmod>
+        <changefreq>always</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://www.fortunatowheels.com/blog/how-ai-helps-buying-used-cars</loc>
+        <lastmod>2023-06-19</lastmod>
+        <changefreq>always</changefreq>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://www.fortunatowheels.com/blog/can-chatgpt-buy-used-cars</loc>
+        <lastmod>2023-06-19</lastmod>
+        <changefreq>always</changefreq>
+        <priority>0.5</priority>
+    </url>
 </urlset>
