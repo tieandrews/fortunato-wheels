@@ -15,3 +15,7 @@ azure-storage-blob~=12.16
 azure-identity~=1.12
 python-dotenv~=1.0
 python-frontmatter~=1.0
+pytest-cov~=4.1
+pytest~=6.2
+coverage~=7.2
+codecov~=2.1
