@@ -21,9 +21,9 @@ except ValueError:
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
 
-from logs import get_logger
-from data.azure_blob_storage import AzureBlob
-from analytics.google_analytics import custom_event_to_GA
+from src.logs import get_logger
+from src.data.azure_blob_storage import AzureBlob
+from src.analytics.google_analytics import custom_event_to_GA
 
 # Create a custom logger
 logger = get_logger(__name__)
