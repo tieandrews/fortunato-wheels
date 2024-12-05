@@ -62,6 +62,7 @@ As this was a side project during my masters I wanted to try out some new techno
 - **CICD**: Github Actions for testing & deployment directly to Azure App Service
   
 **Overall System Diagram**
+  
 ![](assets/fortunato-wheels-system-diagram.png)
 
 ## Exploration of the 3M+ ads dataset
