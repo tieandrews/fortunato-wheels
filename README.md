@@ -3,29 +3,34 @@
 
 Fortunato wheels takes the guesswork out of buying a used car. It does this by compiling datasets of used cars from multiple websites, analyzing the data to identify trends and baselines for car prices, then make this information available to users in an interactive tool to evaluate car prices.
 
-[Try it out here!](https://fortunato-wheels.onrender.com)
+**Try it out here!** *June 2024 Update: I've stopped hosting the site for now to reduce my hosting costs, please reach out if you'd like to see it in action
 ![](assets/fortunato-wheels-homepage.png)
 
-The proposal for this project is located [here](PROPOSAL.md).
+## Goal: Help myself buy a new car at a good price and learn along the way
 
-The project currently has 2 primary focuses:
+At the start of this project I was planning to buy a new car in 6 months time and had some fresh data science skills I wanted to apply. I decided to build Fortunato Wheels to:
+- monitor used car site prices for me
+- help me know if a price was good or bad
+- explore a large (>3M) ads dataset to see what might be lurking in the data
 
-1. **Exploration**
-   - When starting out looking for cars use Fortunato wheels to figure out what you're looking for and where your budget puts you in terms of makes, models, mileage etc.
-   - To manage loading times currently only Honda and Toyota vehicles are used in the tool. This will be expanded in the future.
+The original proposal for this personal project is located [here](PROPOSAL.md).
 
-2. **(Under Development) Analysis**
-   - If you have a car ad in mind and want to find out whether it's a good deal use the Analysis tools to see were it falls against our database of vehicle ads
+## Exploration of the 3M+ ads dataset
 
-## Exploration Usage
-
-To start using Fortunato wheels you can browse through our database of used car ads. You can filter by make, model, year, price, and condition. You can also use the slider to filter by mileage.
+To start using Fortunato wheels you *could browse through the database of used car ads. You can filter by make, model, year, price, and condition. You can also use the slider to filter by mileage.
 
 ![](assets/fortunato-wheels-demo.gif)
 
 1. Use the dropdowns on the left to filter by make, model, year and price. Once happy with your filters click the "Apply Filters" button. The number of matching ads will be displayed at the bottom of the filters so you know how many ads you're looking at.
 2. Look at the price by manufacturer and year on the right and observe how the best fit line (LOWESS model) changes based on your filters
 3. Check out what the distribution of vehicles condition/mileage looks like on the bottom two plots
+
+## Analyze an Ad
+
+Once you have an ad you're interested in, you can analyze it to see how it compares to the rest of the ads in the dataset. You can see the ad's price, mileage, condition, and location. You can also see how the ad compares to the rest of the ads in the dataset in terms of predicted price and our confidence intervals for that make, model, year, and condition.
+
+![](src/assets/2023-07-12_when-will-used-car-prices-go-down/)
+
 ## References
 
 - Craigslist Used Cars Dataset, Austin Reese, https://www.kaggle.com/datasets/austinreese/craigslist-carstrucks-data
