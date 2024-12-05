@@ -21,9 +21,9 @@ except ValueError:
 if SRC_PATH not in sys.path:
     sys.path.append(SRC_PATH)
 
-from logs import get_logger
-from data.azure_blob_storage import AzureBlob
-from analytics.google_analytics import custom_event_to_GA
+from src.logs import get_logger
+from src.data.azure_blob_storage import AzureBlob
+from src.analytics.google_analytics import custom_event_to_GA
 
 # Create a custom logger
 logger = get_logger(__name__)
@@ -40,6 +40,19 @@ app = dash.Dash(
     title="fortunato-wheels",
 )
 
+navbar_logo = html.Img(
+    src="/assets/fortunato-wheels_logo_white.png",
+    height="40px",
+    # style={"margin-top": "10px", "margin-bottom": "10px"},
+)
+
+logo = html.Img(
+    src="/assets/fortunato-wheels_logo_white.png",
+    height="40px",
+    style={"margin-top": "10px", "margin-bottom": "10px"},
+    # on medium screen hide logo
+    className="d-none d-lg-block",
+)
 
 server = app.server
 
@@ -78,20 +91,52 @@ nav_buttons = dbc.Row(
                         ],
                         style={"margin-right": "5px", "margin-left": "5px"},
                     ),
-                    href="explore-ads",
+                    href="/explore-ads",
                 ),
-                dmc.Button(
-                    "(BETA) Analyze an Ad",
-                    leftIcon=[
-                        DashIconify(
-                            icon="material-symbols:lab-research-outline-rounded",
-                            width=25,
-                        )
-                    ],
-                    variant="gradient",
-                    gradient={"from": "indigo", "to": "cyan"},
-                    disabled=True,
-                    style={"margin-right": "5px", "margin-left": "5px"},
+                dmc.Anchor(
+                    dmc.Button(
+                        "(BETA) Analyze an Ad",
+                        leftIcon=[
+                            DashIconify(
+                                icon="material-symbols:lab-research-outline-rounded",
+                                width=25,
+                            )
+                        ],
+                        variant="gradient",
+                        gradient={"from": "indigo", "to": "cyan"},
+                        style={"margin-right": "5px", "margin-left": "5px"},
+                    ),
+                    href="/analyze-ads",
+                ),
+                dmc.Anchor(
+                    dmc.Button(
+                        "Blog",
+                        leftIcon=[
+                            DashIconify(
+                                icon="mdi:learn-outline",
+                                width=25,
+                            )
+                        ],
+                        variant="gradient",
+                        gradient={"from": "indigo", "to": "cyan"},
+                        style={"margin-right": "5px", "margin-left": "5px"},
+                    ),
+                    href="/blog",
+                ),
+                dmc.Anchor(
+                    dmc.Button(
+                        "About",
+                        leftIcon=[
+                            DashIconify(
+                                icon="mingcute:information-line",
+                                width=25,
+                            )
+                        ],
+                        variant="gradient",
+                        gradient={"from": "indigo", "to": "cyan"},
+                        style={"margin-right": "5px", "margin-left": "5px"},
+                    ),
+                    href="/about",
                 ),
             ],
             width="auto",
@@ -110,12 +155,8 @@ navbar = dbc.Navbar(
                 dbc.Row(
                     [
                         dbc.Col(
-                            html.Img(
-                                src="assets/fortunato-wheels_logo_white.png",
-                                height="40px",
-                            )
+                            navbar_logo,
                         ),
-                        # dbc.Col(dbc.NavbarBrand("Fortunato WHe", className="ms-2")),
                     ],
                     align="center",
                     className="g-0",
@@ -136,6 +177,59 @@ navbar = dbc.Navbar(
     dark=True,
 )
 
+# About page link
+about_link = dbc.Col(
+    dbc.NavLink("About", href="/about", style={"color": "white"}),
+    width={"size": 12},
+    lg={"size": 4},
+)
+
+footer = dbc.Navbar(
+    [
+        dbc.Col(logo, width=0, lg=4),
+        dbc.Col(
+            "Copyright " + "\u00A9" + " 2023 Fortunato Wheels. All Rights Reserved",
+            style={"textAlign": "center", "font-size": "0.8rem", "color": "white"},
+            width=12,
+            md=4,
+        ),
+        dbc.Col(
+            [
+                dbc.NavLink(
+                    "(BETA) Analyze an Ad",
+                    href="/analyze-ads",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "Explore Past Ads",
+                    href="/explore-ads",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "Home",
+                    href="/",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "Blog",
+                    href="/blog",
+                    style={"color": "white"},
+                ),
+                dbc.NavLink(
+                    "About",
+                    href="/about",
+                    style={"color": "white"},
+                ),
+            ],
+            width=12,
+            lg=4,
+            style={"textAlign": "center"},
+        ),
+    ],
+    color="secondary",
+    dark=True,
+)
+
 # put navbar in standard html.Div to till width of page
 app.layout = html.Div(
     children=[
@@ -153,6 +247,7 @@ app.layout = html.Div(
                     children=[dash.page_container],
                     fluid=True,
                 ),
+                footer,
             ],
         ),
     ],

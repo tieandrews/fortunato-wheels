@@ -25,7 +25,7 @@ explore_ads_card = dbc.Card(
         dbc.CardHeader(
             [
                 html.H5(
-                    "Figure Out What Used Cars Cost",
+                    "Figure Out What Cars Are in My Budget",
                     style={"text-align": "center"},
                 ),
             ]
@@ -74,7 +74,7 @@ analyze_ad_card = dbc.Card(
                     [
                         dmc.Badge("BETA", color="blue", variant="light"),
                         html.H5(
-                            "Analyze an Ad I Already Found",
+                            "Find Out if an Ad is a Good Deal",
                             style={"text-align": "center"},
                         ),
                     ],
@@ -100,7 +100,6 @@ analyze_ad_card = dbc.Card(
                         ],
                         variant="gradient",
                         gradient={"from": "indigo", "to": "cyan"},
-                        disabled=True,
                         size="xl",
                         radius="xl",
                         fullWidth=True,
@@ -111,7 +110,7 @@ analyze_ad_card = dbc.Card(
                             "margin-bottom": "10px",
                         },
                     ),
-                    href="/",
+                    href="analyze-ads",
                 ),
             ],
             className="align-self-center",
@@ -142,7 +141,7 @@ layout = dbc.Container(  # html.Div(
                         style={"text-align": "center", "margin-top": "20px"},
                     ),
                     html.H4(
-                        "Fortunato Wheels is a data science project that aims to help you find the best deal on a used car.",
+                        "Fortunato Wheels helps you find the best deal on a used car.",
                         style={
                             "text-align": "center",
                             "margin-top": "50px",
@@ -151,7 +150,7 @@ layout = dbc.Container(  # html.Div(
                     ),
                     dmc.Divider(
                         size="sm",
-                        class_name=".h4",
+                        className=".h4",
                         labelPosition="center",
                     ),
                     html.H5(
@@ -180,6 +179,9 @@ layout = dbc.Container(  # html.Div(
                 width={"size": 12, "order": "last", "offset": 0},
                 lg={"size": 6, "order": "last", "offset": 3},
             )
+        ),
+        html.Div(
+            style={"height": "40vh"},
         ),
     ],
     fluid=True,
